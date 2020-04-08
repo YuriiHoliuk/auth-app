@@ -12,5 +12,9 @@ app.get('/todo/id', (req, res) => {
   });
 });
 
+app.get('/comments', (req, res) => {
+  res.json(['gergregr', 'wefwee', 'wefwegeag', 'wefewfewggrhth']);
+});
+
 // eslint-disable-next-line no-console
 app.listen(port, () => console.log(`Server listening on port ${port}`));

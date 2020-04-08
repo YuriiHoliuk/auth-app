@@ -12,8 +12,12 @@ app.get('/ping', (req, res) => {
   res.send('pong');
 });
 
-app.get('/posts/id', (req, res) => {
-  res.json([{ 'id': '0' }]);
+app.get('/posts/:id', (req, res) => {
+  res.json([{ 'id': req.params.id }]);
+});
+
+app.get('/comments', (req, res) => {
+  res.json(['gergregr', 'wefwee', 'wefwegeag', 'wefewfewggrhth']);
 });
 
 // eslint-disable-next-line no-console

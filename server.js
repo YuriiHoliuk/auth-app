@@ -8,8 +8,8 @@ const app = express();
 
 app.use(express.json());
 
-app.get('/ping', (req, res) => {
-  res.send('pong');
+app.get('/comments/:id', (req, res) => {
+  res.send(`Return all comments with id: ${req.params.id} `);
 });
 
 app.get('/comments', (req, res) => {

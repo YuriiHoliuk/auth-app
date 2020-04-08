@@ -12,5 +12,9 @@ app.get('/ping', (req, res) => {
   res.send('pong');
 });
 
+app.get('/posts/id', (req, res) => {
+  res.json([{ 'id' : '0' }]);
+});
+
 // eslint-disable-next-line no-console
 app.listen(port, () => console.log(`Server listening on port ${port}`));

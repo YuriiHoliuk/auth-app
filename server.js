@@ -6,8 +6,10 @@ const port = 3000;
 
 const app = express();
 
-app.get('/ping', (req, res) => {
-  res.send('pong');
+app.get('/todo/id', (req, res) => {
+  res.json({
+    todoId: 1, title: 'First Todo', description: 'BlaBlaBla',
+  });
 });
 
 // eslint-disable-next-line no-console

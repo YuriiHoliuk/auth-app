@@ -11,7 +11,7 @@ app.get('/ping', (req, res) => {
 });
 
 app.get('/posts', (request, response) => {
-  response.jsonp('posts: ', ['dfv', 'ergeg']);
+  response.json(['dfv', 'ergeg']);
 });
 
 // eslint-disable-next-line no-console

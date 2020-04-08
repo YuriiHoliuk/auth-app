@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
+    "start:dev": "nodemon server.js",
     "lint": "eslint ./"
   },
   "keywords": [],
@@ -18,7 +19,8 @@
     "@mate-academy/eslint-config": "0.0.12",
     "eslint": "^6.8.0",
     "eslint-plugin-node": "^11.1.0",
-    "husky": "^4.2.3"
+    "husky": "^4.2.3",
+    "nodemon": "^2.0.2"
   },
   "husky": {
     "hooks": {

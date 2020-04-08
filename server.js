@@ -12,5 +12,9 @@ app.get('/ping', (req, res) => {
   res.send('pong');
 });
 
+app.post('/post', (req, res) => {
+  res.send('POST request to the homepage');
+});
+
 // eslint-disable-next-line no-console
 app.listen(port, () => console.log(`Server listening on port ${port}`));

@@ -6,10 +6,16 @@ const port = 3000;
 
 const app = express();
 
-app.use(express.json());
-
-app.get('/ping', (req, res) => {
-  res.send('pong');
+app.get('/todo/:id', (req, res, next) => {
+  if (req.params.id === 0) {
+    next('route');
+  } else {
+    next();
+  }
+}, (req, res, next) => {
+  res.json({
+    todoId: 1, title: 'First Todo', description: 'BlaBlaBla',
+  });
 });
 
 app.get('/comments', (req, res) => {

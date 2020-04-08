@@ -13,7 +13,7 @@ app.get('/ping', (req, res) => {
 });
 
 app.get('/posts/id', (req, res) => {
-  res.json([{ 'id' : '0' }]);
+  res.json([{ 'id': '0' }]);
 });
 
 // eslint-disable-next-line no-console

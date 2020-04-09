@@ -6,13 +6,16 @@ const fs = require('fs').promises;
 const path = require('path');
 const express = require('express');
 const jwt = require('jsonwebtoken');
+const cors = require('cors');
 const uuid = require('uuid/v4');
 
-const port = process.env.PORT;
-const privateKey = process.env.PRIVATE_KEY;
+const port = process.env.PORT || 3000;
+const privateKey = process.env.PRIVATE_KEY || 'secret';
 
 const app = express();
 
+app.use(cors());
+app.options('*', (req, res) => res.sendStatus(204));
 app.use(express.json());
 
 app.post('/sign-in', async(req, res) => {
@@ -32,7 +35,7 @@ app.post('/sign-in', async(req, res) => {
 
   const { password: userPassword, ...userWithoutPassword } = user;
 
-  if (password !== userPassword) {
+  if (String(password) !== String(userPassword)) {
     res.sendStatus(401);
 
     return;
@@ -40,6 +43,7 @@ app.post('/sign-in', async(req, res) => {
 
   const token = jwt.sign({ email: user.email }, privateKey);
 
+  res.setHeader('access-control-expose-headers', 'x-token');
   res.setHeader('x-token', token);
 
   res.json(userWithoutPassword);
@@ -68,6 +72,7 @@ app.post('/sign-up', async(req, res) => {
   }
 
   user.id = uuid();
+  user.password = String(user.password);
 
   users.push(user);
 

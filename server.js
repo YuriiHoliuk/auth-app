@@ -8,8 +8,8 @@ const app = express();
 
 app.use(express.json());
 
-app.get('/ping', (req, res) => {
-  res.send('pong');
+app.post('/sign-in', (req, res) => {
+  res.send('you are signed in');
 });
 
 app.get('/comments', (req, res) => {

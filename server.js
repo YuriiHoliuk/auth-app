@@ -12,6 +12,10 @@ app.post('/sign-in', (req, res) => {
   res.send('you are signed in');
 });
 
+app.get('/posts/:id', (req, res) => {
+  res.json([{ 'id': req.params.id }]);
+});
+
 app.get('/comments', (req, res) => {
   res.json(['gergregr', 'wefwee', 'wefwegeag', 'wefewfewggrhth']);
 });

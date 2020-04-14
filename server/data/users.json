@@ -1,0 +1,14 @@
+[
+  {
+    "email": "mail@mail.mail",
+    "password": "12345",
+    "name": "Bob",
+    "id": "4e585307-7a48-4405-80db-263a90428e49"
+  },
+  {
+    "email": "tom@gmail.com",
+    "password": "12345",
+    "name": "Tom",
+    "id": "332f8395-f5d8-454c-826e-d9a50a6e34eb"
+  }
+]

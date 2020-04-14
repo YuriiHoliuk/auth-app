@@ -152,7 +152,7 @@ app.patch('/comments/:commentId', bodyParser.json(), (req, res) => {
   comment = {...comment, ...req.body}
 
   fs.writeFileSync(filePath, JSON.stringify(data));
-  res.json(newData);
+  res.json(data.find(item => item.id == req.params.commentId));
 });
 
 app.patch('/posts/:id', (req, res) => {

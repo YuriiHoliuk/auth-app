@@ -133,8 +133,12 @@ app.patch('/posts/:id', (req, res) => {
   res.send(`Post with id:${req.params.id} is updated`);
 });
 
-app.get('/posts', (req, res) => {
-  res.json(['post1', 'post2', 'post3', 'post4']);
+app.get('/posts', async (req, res) => {
+  const postsFilePath = path.join(__dirname, 'data', 'posts.json');
+  const postsFileContent = await fs.readFile(postsFilePath);
+  const posts = JSON.parse(postsFileContent);
+
+  res.json(posts);
 });
 
 // eslint-disable-next-line no-console

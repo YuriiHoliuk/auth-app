@@ -160,6 +160,8 @@ app.get('/posts', async (req, res) => {
   const posts = JSON.parse(postsFileContent);
 
   res.json(posts);
+});
+
 app.get('/users', async(req, res) => {
   const usersContent = await fs.readFile('./data/users.json');
   const users = JSON.parse(usersContent);

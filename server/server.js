@@ -133,5 +133,9 @@ app.patch('/posts/:id', (req, res) => {
   res.send(`Post with id:${req.params.id} is updated`);
 });
 
+app.get('/posts', (req, res) => {
+  res.json(['post1', 'post2', 'post3', 'post4']);
+});
+
 // eslint-disable-next-line no-console
 app.listen(port, () => console.log(`Server listening on port ${port}`));

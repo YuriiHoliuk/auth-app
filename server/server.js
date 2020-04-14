@@ -138,7 +138,9 @@ app.get('/posts', (req, res) => {
 });
 
 app.post('/todos', (req, res) => {
-  res.json(['todos1', 'todos2', 'todos3']);
+  res.json({
+    id: 1, title: 'qwer',
+  });
 });
 
 // eslint-disable-next-line no-console

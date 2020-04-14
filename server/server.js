@@ -154,6 +154,13 @@ app.patch('/posts/:id', (req, res) => {
   res.send(`Post with id:${req.params.id} is updated`);
 });
 
+app.get('/users', async(req, res) => {
+  const usersContent = await fs.readFile('./data/users.json');
+  const users = JSON.parse(usersContent);
+
+  res.json(users);
+});
+
 app.get('/posts', (req, res) => {
   res.json(['post1', 'post2', 'post3', 'post4']);
 });

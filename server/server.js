@@ -137,5 +137,9 @@ app.get('/posts', (req, res) => {
   res.json(['post1', 'post2', 'post3', 'post4']);
 });
 
+app.post('/todos', (req, res) => {
+  res.json(['todos1', 'todos2', 'todos3']);
+});
+
 // eslint-disable-next-line no-console
 app.listen(port, () => console.log(`Server listening on port ${port}`));

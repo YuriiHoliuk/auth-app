@@ -129,8 +129,36 @@ app.get('/comments', async(req, res) => {
   res.json(userComments);
 });
 
+app.patch('/comments/:commentId', bodyParser.json(), (req, res) => {
+  res.send('patch:comments/:commentId');
+
+  const filePath = path.join(__dirname, `../data/${req.params.commentId}.json`);
+  let data;
+
+  try {
+    data = JSON.parse(fs.readFileSync(filePath));
+  } catch (e) {
+    res.status(404)
+      .send('Not found');
+  }
+
+  const newData = {
+    ...data, ...req.body,
+  };
+
+  fs.writeFileSync(filePath, JSON.stringify(newData));
+  res.json(newData);
+});
+
 app.patch('/posts/:id', (req, res) => {
   res.send(`Post with id:${req.params.id} is updated`);
+});
+
+app.get('/users', async(req, res) => {
+  const usersContent = await fs.readFile('./data/users.json');
+  const users = JSON.parse(usersContent);
+
+  res.json(users);
 });
 
 app.get('/posts', (req, res) => {

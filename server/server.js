@@ -132,7 +132,7 @@ app.get('/comments', async(req, res) => {
 app.patch('/comments/:commentId', bodyParser.json(), (req, res) => {
   res.send('patch:comments/:commentId');
 
-  const filePath = path.join(__dirname, `../data/${req.params.commentId}.json`);
+  const filePath = path.join(__dirname, `data/comments.json`);
   let data;
 
   try {
@@ -142,11 +142,16 @@ app.patch('/comments/:commentId', bodyParser.json(), (req, res) => {
       .send('Not found');
   }
 
-  const newData = {
-    ...data, ...req.body,
-  };
+  let comment = data.find(item => item.id == req.params.commentId)
 
-  fs.writeFileSync(filePath, JSON.stringify(newData));
+  if(!comment) {
+    res.status(404)
+      .send('Not found');
+  }
+
+  comment = {...comment, ...req.body}
+
+  fs.writeFileSync(filePath, JSON.stringify(data));
   res.json(newData);
 });
 
@@ -156,3 +161,4 @@ app.patch('/posts/:id', (req, res) => {
 
 // eslint-disable-next-line no-console
 app.listen(port, () => console.log(`Server listening on port ${port}`));
+//${req.params.commentId}

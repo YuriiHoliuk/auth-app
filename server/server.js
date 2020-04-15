@@ -8,6 +8,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const uuid = require('uuid/v4');
+const bodyParser = require('body-parser');
 
 const port = process.env.PORT || 3000;
 const privateKey = process.env.PRIVATE_KEY || 'secret';
@@ -140,8 +141,44 @@ app.get('/comments/:id', async(req, res) => {
   res.json(comment);
 });
 
+app.patch('/comments/:commentId', bodyParser.json(), (req, res) => {
+  res.send('patch:comments/:commentId');
+
+  const filePath = path.join(__dirname, `../data/${req.params.commentId}.json`);
+  let data;
+
+  try {
+    data = JSON.parse(fs.readFileSync(filePath));
+  } catch (e) {
+    res.status(404)
+      .send('Not found');
+  }
+
+  const newData = {
+    ...data, ...req.body,
+  };
+
+  fs.writeFileSync(filePath, JSON.stringify(newData));
+  res.json(newData);
+});
+
 app.patch('/posts/:id', (req, res) => {
   res.send(`Post with id:${req.params.id} is updated`);
+});
+
+app.get('/posts', async(req, res) => {
+  const postsFilePath = path.join(__dirname, 'data', 'posts.json');
+  const postsFileContent = await fs.readFile(postsFilePath);
+  const posts = JSON.parse(postsFileContent);
+
+  res.json(posts);
+});
+
+app.get('/users', async(req, res) => {
+  const usersContent = await fs.readFile('./data/users.json');
+  const users = JSON.parse(usersContent);
+
+  res.json(users);
 });
 
 // eslint-disable-next-line no-console

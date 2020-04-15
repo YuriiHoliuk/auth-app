@@ -8,6 +8,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const uuid = require('uuid/v4');
+const bodyParser = require('body-parser');
 
 const port = process.env.PORT || 3000;
 const privateKey = process.env.PRIVATE_KEY || 'secret';
@@ -154,7 +155,7 @@ app.patch('/posts/:id', (req, res) => {
   res.send(`Post with id:${req.params.id} is updated`);
 });
 
-app.get('/posts', async (req, res) => {
+app.get('/posts', async(req, res) => {
   const postsFilePath = path.join(__dirname, 'data', 'posts.json');
   const postsFileContent = await fs.readFile(postsFilePath);
   const posts = JSON.parse(postsFileContent);

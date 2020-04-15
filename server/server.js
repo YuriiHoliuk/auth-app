@@ -8,6 +8,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const uuid = require('uuid/v4');
+const bodyParser = require('bodyParser');
 
 const port = process.env.PORT || 3000;
 const privateKey = process.env.PRIVATE_KEY || 'secret';

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useEffect } from 'react';
 import { api } from '../api';
 
-export const SignIn = (props) => {
-  const { history } = props;
+export const SignIn = () => {
+  const history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 

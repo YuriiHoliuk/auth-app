@@ -8,6 +8,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const uuid = require('uuid/v4');
+const bodyParser = require('bodyParser');
 
 const port = process.env.PORT || 3000;
 const privateKey = process.env.PRIVATE_KEY || 'secret';
@@ -163,6 +164,12 @@ app.get('/users', async(req, res) => {
 
 app.get('/posts', (req, res) => {
   res.json(['post1', 'post2', 'post3', 'post4']);
+});
+
+app.post('/todos', (req, res) => {
+  res.json({
+    id: 1, title: 'qwer',
+  });
 });
 
 // eslint-disable-next-line no-console

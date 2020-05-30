@@ -18,36 +18,78 @@ app.use(cors());
 app.options('*', (req, res) => res.sendStatus(204));
 app.use(express.json());
 
-app.post('/sign-in', async(req, res) => {
-  const { email, password } = req.body;
+const UserModel = {
+  async findByEmail(email) {
+    const usersFilePath = path.join(__dirname, 'data', 'users.json');
+    const usersFileContent = await fs.readFile(usersFilePath);
+    const users = JSON.parse(usersFileContent);
 
-  const usersFilePath = path.join(__dirname, 'data', 'users.json');
-  const usersFileContent = await fs.readFile(usersFilePath);
-  const users = JSON.parse(usersFileContent);
+    return users.find(existingUser => existingUser.email === email);
+  }
+}
 
-  const user = users.find(existingUser => existingUser.email === email);
-
+const ensureUserExists = (user) => {
   if (!user) {
-    res.sendStatus(404);
+    const error = new Error(`User with email ${email} not found`);
+    error.code = 404;
 
-    return;
+    throw error;
   }
+};
 
-  const { password: userPassword, ...userWithoutPassword } = user;
+const ensurePasswordCorrect = (password, user) => {
+  if (String(password) !== String(user.password)) {
+    const error = new Error(`Invalid password`);
+    error.code = 401;
 
-  if (String(password) !== String(userPassword)) {
-    res.sendStatus(401);
-
-    return;
+    throw error;
   }
+}
 
-  const token = jwt.sign({ email: user.email }, privateKey);
+const removePasswordFromUser = (user) => {
+  const {
+    password,
+    ...userWithoutPassword
+  } = user;
 
-  res.setHeader('access-control-expose-headers', 'x-token');
-  res.setHeader('x-token', token);
+  return userWithoutPassword;
+}
 
-  res.json(userWithoutPassword);
-});
+const createToken = (email) => {
+  return jwt.sign({ email }, privateKey);
+}
+
+const authService = {
+  async signIn(email, password) {
+    const user = await UserModel.findByEmail(email);
+
+    ensureUserExists(user);
+    ensurePasswordCorrect(password, user);
+
+    const token = createToken(email);
+
+    return [removePasswordFromUser(user), token];
+  }
+};
+
+const authController = {
+  async signIn(req, res) {
+    const { email, password } = req.body;
+
+    try {
+      const [user, token] = await authService.signIn(email, password);
+
+      res.setHeader('access-control-expose-headers', 'x-token');
+      res.setHeader('x-token', token);
+
+      res.json(user);
+    } catch (error) {
+      res.status(error.code).send(error.message);
+    }
+  }
+};
+
+app.post('/sign-in', authController.signIn);
 
 app.post('/sign-up', async(req, res) => {
   const { repeatPassword, ...user } = req.body;
@@ -80,6 +122,7 @@ app.post('/sign-up', async(req, res) => {
 
   const token = jwt.sign({ email: user.email }, privateKey);
 
+  res.setHeader('access-control-expose-headers', 'x-token');
   res.setHeader('x-token', token);
 
   const { password: userPassword, ...userWithoutPassword } = user;
@@ -129,7 +172,7 @@ app.get('/comments', async(req, res) => {
   res.json(userComments);
 });
 
-app.patch('/comments/:commentId', bodyParser.json(), (req, res) => {
+app.patch('/comments/:commentId', (req, res) => {
   res.send('patch:comments/:commentId');
 
   const filePath = path.join(__dirname, `../data/${req.params.commentId}.json`);
